@@ -15,6 +15,10 @@ class BaseScraper:
         with open(filename, "w", encoding="utf-8") as f:
             json.dump(data, f, indent=4)
 
+    def clear_data(self, filename):
+        with open(filename, "w", encoding="utf-8") as f:
+            json.dump([], f, indent=4)
+
     def close_driver(self):
         self.driver.quit()
 
@@ -26,9 +30,11 @@ class TradeIndiaScraper(BaseScraper):
         self.base_url = "https://www.tradeindia.com/"
         self.search_query = search_query
         self.scraped_data = []
+        self.data_filename = "trade_india_suppliers.json"
 
     def run_scraper(self):
         """Runs the scraper: fetch, parse, and save data across multiple pages."""
+        self.clear_data(self.data_filename)  # Clear previous data before scraping
         page_num = 1
         self.scraped_data = []
 
@@ -41,6 +47,7 @@ class TradeIndiaScraper(BaseScraper):
                 break
             
             self.scraped_data.extend(supplier_data)
+            self.save_data(self.scraped_data, self.data_filename)
             
             for index, supplier in enumerate(supplier_data, 1):
                 print(f"\nSupplier {index + len(self.scraped_data) - len(supplier_data)}:")
@@ -54,39 +61,18 @@ class TradeIndiaScraper(BaseScraper):
             
             print(f"Scraped Page {page_num}, Total Suppliers: {len(self.scraped_data)}")
             
-            # Check if there is a next page button
-            next_page_element = self.driver.find_elements(By.CLASS_NAME, "highlight_btn")
-            if not next_page_element:
+            if not self.get_next_page_url():
                 break  # Stop if no next page
             
             page_num += 1
-
-        self.save_data(self.scraped_data, "trade_india_suppliers.json")
+        
         self.close_driver()
-
 
     def parse_page(self) -> list[dict]:
         """Extracts supplier details from TradeIndia search results."""
         suppliers = []
-        suppliers.append({
-            "Company Name": "svm pvt ltd",
-            "Website": "website",
-            "Country": "India",  # Since it's TradeIndia
-            "Industries Served": ["General Manufacturing"],  # Placeholder
-            "Manufacturing Processes": ["Unknown"],  # Placeholder
-            "Certifications": ["Unknown"],  # Placeholder
-            "Customers": ["Unknown"],  # Placeholder
-            "Metadata": {
-                "# Employees": "Unknown",
-                "Annual Revenue": "Unknown"
-            }
-        })
-
-
-        # Wait for elements to load
         time.sleep(3)
 
-        # Verify the correct selector (update if TradeIndia changes their site structure)<h2 color="#2D3840" class="sc-3b1eb120-11 RqywW mb-1 card_title Body3R">Wire For Central Wheels - Size: Standard</h2>
         try:
             supplier_cards = self.driver.find_elements(By.CLASS_NAME, "card")  
         except Exception as e:
@@ -98,12 +84,9 @@ class TradeIndiaScraper(BaseScraper):
                 prod_element = card.find_element(By.CLASS_NAME, "sc-3b1eb120-11")
                 prod_name = prod_element.text if prod_element else "Unknown"
 
-                # Extract company name
                 company_element = card.find_element(By.CLASS_NAME, "sc-3b1eb120-13")
                 company_name = company_element.text if company_element else "Unknown"
 
-
-                # Extract website URL
                 website_element = card.find_elements(By.TAG_NAME, "a")
                 website = website_element[0].get_attribute("href") if website_element else "N/A"
 
@@ -111,11 +94,11 @@ class TradeIndiaScraper(BaseScraper):
                     "Product Name": prod_name,
                     "Company Name": company_name,
                     "Website": website,
-                    "Country": "India",  # Since it's TradeIndia
-                    "Industries Served": ["General Manufacturing"],  # Placeholder
-                    "Manufacturing Processes": ["Unknown"],  # Placeholder
-                    "Certifications": ["Unknown"],  # Placeholder
-                    "Customers": ["Unknown"],  # Placeholder
+                    "Country": "India",
+                    "Industries Served": ["General Manufacturing"],
+                    "Manufacturing Processes": ["Unknown"],
+                    "Certifications": ["Unknown"],
+                    "Customers": ["Unknown"],
                     "Metadata": {
                         "# Employees": "Unknown",
                         "Annual Revenue": "Unknown"
@@ -127,21 +110,15 @@ class TradeIndiaScraper(BaseScraper):
 
         return suppliers
     
-
     def get_next_page_url(self):
         """Finds and returns the URL of the next page, if available."""
         try:
             next_button = self.driver.find_element(By.CLASS_NAME, "highlight_btn")  # Update if needed
-            next_page_url = next_button.get_attribute("href")
-            return next_page_url
+            return next_button.get_attribute("href")
         except Exception:
-            return None  # No next page found
+            return None
     
-
-
 if __name__ == "__main__":
     search_term = "steel manufacturers"
     scraper = TradeIndiaScraper(search_term)
     scraper.run_scraper()
-
-
