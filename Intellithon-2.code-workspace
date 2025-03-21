@@ -1,0 +1,13 @@
+{
+	"folders": [
+		{
+			"name": "Intellithon-2",
+			"path": "."
+		},
+		{
+			"name": "static",
+			"path": "../Intellithon-1/static"
+		}
+	],
+	"settings": {}
+}
