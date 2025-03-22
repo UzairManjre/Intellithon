@@ -50,10 +50,10 @@ def search():
 
 @app.route('/results/<int:page>')
 def results(page):
-    if not os.path.exists("filtered_suppliers.json"):
+    if not os.path.exists(SUPPLIER_JSON_PATH):
         return "No search results. Please perform a search first.", 404
 
-    with open("filtered_suppliers.json", "r") as temp_file:
+    with open(SUPPLIER_JSON_PATH, "r") as temp_file:
         suppliers = json.load(temp_file)
 
     if not suppliers:

@@ -23,10 +23,47 @@
     <div class="supplier-grid">
       {% for supplier in suppliers %}
         <div class="supplier-card">
-          <h3>{{ supplier.name }}</h3>
-          <p><strong>Product:</strong> {{ supplier.product }}</p>
-          <p><strong>Location:</strong> {{ supplier.location }}</p>
-          <p><strong>Contact:</strong> <a href="mailto:{{ supplier.contact }}">{{ supplier.contact }}</a></p>
+          <h3>{{ supplier.company_name }}</h3>
+
+          {% if supplier.website and supplier.website != "Unknown" %}
+            <p><strong>Website:</strong> <a href="{{ supplier.website }}" target="_blank">{{ supplier.website }}</a></p>
+          {% endif %}
+
+          {% if supplier.country and supplier.country != "Unknown" %}
+            <p><strong>Country:</strong> {{ supplier.country }}</p>
+          {% endif %}
+
+          {% if supplier.industries_served and "Unknown" not in supplier.industries_served %}
+            <p><strong>Industries Served:</strong> {{ ", ".join(supplier.industries_served) }}</p>
+          {% endif %}
+
+          {% if supplier.manufacturing_processes and "Unknown" not in supplier.manufacturing_processes %}
+            <p><strong>Manufacturing Processes:</strong> {{ ", ".join(supplier.manufacturing_processes) }}</p>
+          {% endif %}
+
+          {% if supplier.certifications and "Unknown" not in supplier.certifications %}
+            <p><strong>Certifications:</strong> {{ ", ".join(supplier.certifications) }}</p>
+          {% endif %}
+
+          {% if supplier.customers and "Unknown" not in supplier.customers %}
+            <p><strong>Customers:</strong> {{ ", ".join(supplier.customers) }}</p>
+          {% endif %}
+
+          {% if supplier.employees and supplier.employees != "Unknown" %}
+            <p><strong>Employees:</strong> {{ supplier.employees }}</p>
+          {% endif %}
+
+          {% if supplier.annual_revenue and supplier.annual_revenue != "Unknown" %}
+            <p><strong>Annual Revenue:</strong> {{ supplier.annual_revenue }}</p>
+          {% endif %}
+
+          {% if supplier.price and supplier.price != "Unknown" %}
+            <p><strong>Price:</strong> {{ supplier.price }}</p>
+          {% endif %}
+
+          {% if supplier.score and supplier.score != "Unknown" %}
+            <p><strong>Score:</strong> {{ supplier.score }}</p>
+          {% endif %}
         </div>
       {% endfor %}
     </div>
