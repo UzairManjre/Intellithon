@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Search Results - Industrial Supplier Finder</title>
+  <link rel="stylesheet" href="static/styles.css">
+</head>
+<body class="result-page">
+
+  <nav class="navbar">
+    <ul>
+      <li><a href="{{ url_for('home') }}">Home</a></li>
+      <li><a href="{{ url_for('key_features') }}">Key Features</a></li>
+      <li><a href="{{ url_for('industries') }}">Industries</a></li>
+      <li><a href="{{ url_for('contact') }}">Contact Us</a></li>
+    </ul>
+  </nav>
+
+  <section class="results-container">
+    <h2>Supplier Search Results</h2>
+    
+    <div class="supplier-grid">
+      {% for supplier in suppliers %}
+        <div class="supplier-card">
+          <h3>{{ supplier.name }}</h3>
+          <p><strong>Product:</strong> {{ supplier.product }}</p>
+          <p><strong>Location:</strong> {{ supplier.location }}</p>
+          <p><strong>Contact:</strong> <a href="mailto:{{ supplier.contact }}">{{ supplier.contact }}</a></p>
+        </div>
+      {% endfor %}
+    </div>
+
+    <!-- Pagination Controls -->
+    <div class="pagination">
+      {% if page > 1 %}
+        <a href="{{ url_for('results', page=page-1) }}" class="prev">Previous</a>
+      {% endif %}
+
+      <span>Page {{ page }} of {{ total_pages }}</span>
+
+      {% if page < total_pages %}
+        <a href="{{ url_for('results', page=page+1) }}" class="next">Next</a>
+      {% endif %}
+    </div>
+
+  </section>
+
+</body>
+</html>
