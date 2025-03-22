@@ -84,7 +84,7 @@ class TradeIndiaScraper(BaseScraper):
                 prod_element = card.find_element(By.CLASS_NAME, "sc-3b1eb120-11")
                 prod_name = prod_element.text if prod_element else "Unknown"
 
-                company_element = card.find_element(By.CLASS_NAME, "sc-3b1eb120-13")
+                company_element = card.find_element(By.CLASS_NAME, "anchor-wrapper")
                 company_name = company_element.text if company_element else "Unknown"
 
                 website_element = card.find_elements(By.TAG_NAME, "a")

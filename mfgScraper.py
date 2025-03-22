@@ -15,6 +15,10 @@ class BaseScraper:
         with open(filename, "w", encoding="utf-8") as f:
             json.dump(data, f, indent=4)
 
+    def clear_data(self, filename):
+        with open(filename, "w", encoding="utf-8") as f:
+            json.dump([], f, indent=4)
+
     def close_driver(self):
         self.driver.quit()
 
@@ -25,8 +29,15 @@ class mfgScraper(BaseScraper):
         self.search_query = search_query
         self.location = location
         self.scraped_data = []  # Store all scraped suppliers across pages
+        self.data_filename = "mfg_suppliers.json"
 
     def run_scraper(self):
+        self.clear_data(self.data_filename)
+        page_num = 1
+        self.scraped_data = []
+
+        
+
         """Runs the scraper: fetch, parse, paginate, print, and save data."""
         search_url = f"https://www.mfg.com/manufacturer-directory/?manufacturing_location={self.location}&ep_filter_manufacturing_location={self.location}&capability={self.search_query}&ep_filter_capability={self.search_query}&search="
         self.fetch_page(search_url)
@@ -34,6 +45,7 @@ class mfgScraper(BaseScraper):
         while True:
             supplier_data = self.parse_page()
             self.scraped_data.extend(supplier_data)
+            self.save_data(self.scraped_data, self.data_filename)
 
             # Print extracted details for each batch of suppliers
             for index, supplier in enumerate(supplier_data, 1):
@@ -57,11 +69,10 @@ class mfgScraper(BaseScraper):
                 print("Next page not found. Ending process.")
                 break
 
-            print(f"Moving to next page: {next_page_url}")
+            print(f"{page_num} Scraped, now Moving to next page: {next_page_url}")
             self.fetch_page(next_page_url)  # Navigate to the next page
 
         # Save the extracted data
-        self.save_data(self.scraped_data, "mfg_suppliers.json")
         self.close_driver()
 
     def parse_page(self) -> list[dict]:

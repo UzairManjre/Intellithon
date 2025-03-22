@@ -57,7 +57,7 @@ def save_json(data, output_path):
         json.dump(data, file, indent=4)
 
 def main():
-    input_files = ["trade_india_suppliers.json", "mfg_suppliers.json"]
+    input_files = ["trade_india_suppliers.json", "mfg_suppliers.json", "indiamart_suppliers.json", "alibaba_suppliers.json"]
     all_suppliers = []
     
     for file in input_files:
