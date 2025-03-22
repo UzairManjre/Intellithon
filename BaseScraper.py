@@ -24,11 +24,11 @@ class BaseScraper:
         chrome_options.add_argument("--disable-software-rasterizer")  # Fix rendering crashes
         chrome_options.add_argument("--disable-background-networking")
         # Load existing user profile to retain login credentials
-        # chrome_options.add_argument("--user-data-dir=C:/Users/uzair/AppData/Local/Google/Chrome/User Data")
-        # chrome_options.add_argument("--profile-directory=Default")  # Change if needed (e.g., "Profile 1")
+        chrome_options.add_argument("--user-data-dir=C:/Users/uzair/AppData/Local/Google/Chrome/User Data")
+        chrome_options.add_argument("--profile-directory=Default")  # Change if needed (e.g., "Profile 1")
 
         # Optional: Run in headless mode to avoid UI interference
-        # chrome_options.add_argument("--headless=new")
+        chrome_options.add_argument("--headless=new")
 
         self.driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=chrome_options)
     def fetch_page(self, url: str) -> str:

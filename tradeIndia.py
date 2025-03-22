@@ -5,12 +5,12 @@ import time
 
 
 class BaseScraper:
-    def __init__(self):
+    def __init__(self):  # Corrected constructor name
         self.driver = webdriver.Chrome()
 
     def fetch_page(self, url):
         self.driver.get(url)
-        time.sleep(5)
+        time.sleep(2)
 
     def save_data(self, data, filename):
         with open(filename, "w", encoding="utf-8") as f:
@@ -25,8 +25,8 @@ class BaseScraper:
 
 
 class TradeIndiaScraper(BaseScraper):
-    def __init__(self, search_query, max_suppliers=200):
-        super().__init__()
+    def __init__(self, search_query, max_suppliers=200):  # Corrected constructor name
+        super().__init__()  # Call the parent class constructor
         self.base_url = "https://www.tradeindia.com/"
         self.search_query = search_query
         self.scraped_data = []
@@ -87,7 +87,8 @@ class TradeIndiaScraper(BaseScraper):
                 prod_element = card.find_element(By.CLASS_NAME, "sc-3b1eb120-11")
                 prod_name = prod_element.text if prod_element else "Unknown"
 
-                company_element = card.find_element(By.CLASS_NAME, "sc-3b1eb120-13")
+                company_element = card.find_element(By.XPATH, ".//span[contains(@class, 'anchor-wrapper')]/h3[contains(@class, 'coy-name')]")
+
                 company_name = company_element.text if company_element else "Unknown"
 
                 website_element = card.find_elements(By.TAG_NAME, "a")
@@ -123,6 +124,6 @@ class TradeIndiaScraper(BaseScraper):
 
 if __name__ == "__main__":
     search_term = "steel manufacturers"
-     # Set maximum supplier limit
-    scraper = TradeIndiaScraper(search_term)
+    max_suppliers = 100  # Limit to 100 suppliers
+    scraper = TradeIndiaScraper(search_term, max_suppliers)
     scraper.run_scraper()

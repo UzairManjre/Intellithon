@@ -55,7 +55,7 @@ class AlibabaScraper(BaseScraper):
 
                 supplier_info = {
                     "product": query,
-                    "name": name,
+                    "name": company,
                     "company": company,
                     "price": price,
                     "website": "https://www.alibaba.com" + website if website.startswith("//") else website,
@@ -76,19 +76,10 @@ class AlibabaScraper(BaseScraper):
         return suppliers
 
     def save_data(self, data, filename):
-        """Saves data to a JSON file without overwriting existing data."""
+        """Saves data to a JSON file, overwriting any existing data."""
         try:
-            existing_data = []
-            if os.path.exists(filename) and os.path.getsize(filename) > 0:
-                with open(filename, "r", encoding="utf-8") as f:
-                    try:
-                        existing_data = json.load(f)
-                    except json.JSONDecodeError:
-                        print(f"⚠️ Warning: {filename} is corrupted. Creating a new file.")
-
-            existing_data.extend(data)
             with open(filename, "w", encoding="utf-8") as f:
-                json.dump(existing_data, f, indent=4, ensure_ascii=False)
+                json.dump(data, f, indent=4, ensure_ascii=False)
 
             print(f"💾 Data saved successfully in {filename}")
         except Exception as e:

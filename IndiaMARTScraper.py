@@ -12,7 +12,7 @@ class IndiaMARTScraper(BaseScraper):
 
     BASE_URL = "https://dir.indiamart.com/search.mp?ss={query}"
     MIN_SUPPLIERS = 300  # Minimum suppliers to extract before stopping
-    SCROLL_LIMIT = 6  # Maximum number of scroll attempts
+    SCROLL_LIMIT = 3  # Maximum number of scroll attempts
 
     def __init__(self, search_queries=None, custom_urls=None):
         super().__init__()
@@ -103,25 +103,12 @@ class IndiaMARTScraper(BaseScraper):
         return suppliers
 
     def save_data(self, data, filename):
-        """Saves data to a JSON file without overwriting existing data."""
+        """Saves data to a JSON file, overwriting any existing data."""
         try:
-            existing_data = []
-
-            # Check if the file exists and is not empty
-            if os.path.exists(filename) and os.path.getsize(filename) > 0:
-                with open(filename, "r", encoding="utf-8") as f:
-                    try:
-                        existing_data = json.load(f)
-                    except json.JSONDecodeError:
-                        print(f"⚠️ Warning: {filename} is corrupted. Creating a new file.")
-
-            existing_data.extend(data)
-
             with open(filename, "w", encoding="utf-8") as f:
-                json.dump(existing_data, f, indent=4, ensure_ascii=False)
+                json.dump(data, f, indent=4, ensure_ascii=False)
 
             print(f"💾 Data saved successfully in {filename}")
-
         except Exception as e:
             print(f"❌ Error saving JSON: {e}")
 
