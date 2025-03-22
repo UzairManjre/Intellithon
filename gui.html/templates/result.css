@@ -1,0 +1,135 @@
+/* General Styles for Result Page */
+body {
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+    color: #333;
+    background: #f9f9f9;
+  }
+  /* Navbar */
+  .navbar {
+    background: linear-gradient(45deg, #6a11cb, #2575fc);
+    padding: 1rem 2rem;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+  }
+  
+  .navbar ul {
+    list-style: none;
+    display: flex;
+    justify-content: flex-end;
+    margin: 0;
+    padding: 0;
+  }
+  
+  .navbar ul li {
+    margin: 0 1rem;
+  }
+  
+  .navbar ul li a {
+    color: #fff;
+    text-decoration: none;
+    font-weight: bold;
+    transition: color 0.3s ease;
+  }
+  
+  .navbar ul li a:hover {
+    color: #ff6f61;
+  }
+  
+  /* Supplier Results Container */
+  .results-container {
+    max-width: 1200px;
+    margin: 2rem auto;
+    padding: 1rem;
+    text-align: center;
+  }
+  
+  .results-container h2 {
+    font-size: 2rem;
+    color: #333;
+    margin-bottom: 1.5rem;
+  }
+  
+  /* Supplier Grid */
+  .supplier-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1.5rem;
+    justify-content: center;
+    margin-top: 1rem;
+  }
+  
+  /* Supplier Card */
+  .supplier-card {
+    background: #fff;
+    border-radius: 12px;
+    padding: 1.5rem;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    text-align: left;
+  }
+  
+  .supplier-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+  }
+  
+  .supplier-card h3 {
+    font-size: 1.4rem;
+    margin-bottom: 0.5rem;
+    color: #6a11cb;
+  }
+  
+  .supplier-card p {
+    font-size: 1rem;
+    color: #555;
+    margin: 0.3rem 0;
+  }
+  
+  .supplier-card a {
+    color: #2575fc;
+    text-decoration: none;
+    font-weight: bold;
+  }
+  
+  .supplier-card a:hover {
+    text-decoration: underline;
+  }
+  
+  /* Pagination */
+  .pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 2rem;
+    font-size: 1rem;
+  }
+  
+  .pagination a {
+    padding: 0.6rem 1rem;
+    margin: 0 0.5rem;
+    border-radius: 5px;
+    background: #2575fc;
+    color: #fff;
+    text-decoration: none;
+    transition: background 0.3s ease;
+  }
+  
+  .pagination a:hover {
+    background: #6a11cb;
+  }
+  
+  .pagination span {
+    font-weight: bold;
+  }
+  
+  /* Responsive Design */
+  @media (max-width: 768px) {
+    .supplier-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+  
